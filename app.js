@@ -27,19 +27,19 @@ const connection = mysql.createConnection({
 
 // Display Title on Screen
 figlet('Employee Manager', (err, result) => {
-  console.log(err || result);
+    console.log(err || result);
 });
 
 // Connect to Database
 connection.connect(function(err) {
-  if (err) throw err;
+    if (err) throw err;
 
-  // Start the Prompts
-  start();
-  getDepartments();
-  getRoles();
-  getManagers();
-  getEmployees();
+    // Start the Prompts
+    start();
+    getDepartments();
+    getRoles();
+    getManagers();
+    getEmployees();
 });
 
 start = () => {
@@ -48,20 +48,20 @@ start = () => {
         name: "choices",
         type: "list",
         message: "Main Menu - Choose Option?",
-        choices: ["ADD", "VIEW", "UPDATE", "DELETE", "EXIT"]
+        choices: ["View", "Add", "Update", "Delete", "EXIT"]
     })
     .then(function(answer) {
         // Call appropriate function based on answer selected or end
-        if (answer.choices === "ADD") {
-            addFunction();
-        }
-        else if (answer.choices === "VIEW") {
+        if (answer.choices === "View") {
             viewFunction();
+        }
+        else if (answer.choices === "Add") {
+            addFunction();
         } 
-        else if (answer.choices === "UPDATE") {
+        else if (answer.choices === "Update") {
             updateFunction();
         }
-        else if (answer.choices === "DELETE") {
+        else if (answer.choices === "Delete") {
             deleteFunction();
         }
         else {
@@ -112,18 +112,18 @@ addFunction = () => {
             name: "add",
             type: "list",
             message: "Add Menu - What do you want to add?",
-            choices: ["DEPARTMENT", "ROLE", "EMPLOYEE", "EXIT"]
+            choices: ["Department", "Role", "Employee", "EXIT"]
         }
     ]).then(function(answer) {
-        if (answer.add === "DEPARTMENT") {
+        if (answer.add === "Department") {
             console.log("Add a new: " + answer.add);
             addDepartment();
         }
-        else if (answer.add === "ROLE") {
+        else if (answer.add === "Role") {
             console.log("Add a new: " + answer.add);
             addRole();
         }
-        else if (answer.add === "EMPLOYEE") {
+        else if (answer.add === "Employee") {
             console.log("Add a new: " + answer.add);
             addEmployee();
         } 
@@ -272,26 +272,26 @@ viewFunction = () => {
             name: "view",
             type: "list",
             message: "What would you like to view?",
-            choices: ["DEPARTMENTS", "ROLES", "EMPLOYEES", "EMPLOYEES BY MANAGER", "DEPARTMENT SALARIES", "EXIT"]
+            choices: ["All Departments", "All Roles", "All Employees", "Employees by Manager", "Department Salaries", "EXIT"]
         }
     ]).then(answer => {
-        if (answer.view === "DEPARTMENTS") {
+        if (answer.view === "All Departments") {
             console.log('\r\n');
             viewAllDepartments();
         }
-        else if (answer.view === "ROLES") {
+        else if (answer.view === "All Roles") {
             console.log('\r\n');
             viewAllRoles();
         }
-        else if (answer.view === "EMPLOYEES") {
+        else if (answer.view === "All Employees") {
             console.log('\r\n');
             viewEmployees();
         }
-        else if (answer.view === "EMPLOYEES BY MANAGER") {
+        else if (answer.view === "Employees by Manager") {
             console.log('\r\n');
             viewEmployeesByManager();
         }
-        else if (answer.view === "DEPARTMENT SALARIES") {
+        else if (answer.view === "Department Salaries") {
             console.log('\r\n');
             viewDeptSalary();
         }
