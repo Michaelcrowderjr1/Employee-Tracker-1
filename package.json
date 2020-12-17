@@ -1,0 +1,30 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: No test\" && exit 1",
+    "start": "node app.js",
+    "watch": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drclever/Employee-Tracker.git"
+  },
+  "author": "Donna Clever",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drclever/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/drclever/Employee-Tracker#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "figlet": "^1.5.0",
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
