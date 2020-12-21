@@ -96,9 +96,7 @@ function start() {
         }
         ])
     .then((userChoice) => {
-        // const {choices} = answers;
 
-        console.log(userChoice)
         switch(userChoice.choice) {
             case "viewAllEmployees":
                 return viewAllEmployees();
@@ -132,6 +130,7 @@ function start() {
     })
     .catch(function(err) {
         console.log(err);
+        connection.end();
     });
 };
 
@@ -143,6 +142,7 @@ function addDepartment() {
             message: "Enter department to be added: "
         }
     ]).then(function(answer) {
+        // Insert new department to department table.
         connection.query(`INSERT INTO department (name) VALUES ('${answer.department}')`, (err, res) => {
         if (err) throw err;
             console.log("New Department added: " + answer.department);
@@ -153,6 +153,7 @@ function addDepartment() {
 };
 
 function addRole() {
+    // Query to department table to build department array for user to choose from when associating the new role.
     connection.query("SELECT id, name FROM department", (err, res) => {
         if (err) throw err;
         departments = res;
@@ -184,6 +185,7 @@ function addRole() {
                 department_id = departmentOptions[i].id
                 }
             }
+            // Insert new role to role table.
             selectSql = `
                 INSERT INTO role (title, salary, department_id) VALUES
                 ('${answer.title}', '${answer.salary}', ${department_id})
@@ -205,10 +207,12 @@ function addRole() {
 };
 
 function addEmployee() {
+    // Query to role table to build role array for user to choose from when associating the new employee.
     connection.query("SELECT id, title FROM role", function (err, res) {
         if (err) throw err;
         roles = res;
-        console.log(roles);
+
+        // Query to employee table to build manager array for user to choose from when associating the new employee.
         selectSql = `
           SELECT id, first_name, last_name, CONCAT_WS(' ', first_name, last_name) AS managers 
           FROM employee
@@ -272,6 +276,7 @@ function addEmployee() {
                         manager_id = managerOptions[i].id
                     }
                 }
+                // Insert new employee to employee table.
                 selectSql = `
                     INSERT INTO employee (first_name, last_name, role_id, manager_id)
                     VALUES ('${answer.first_name}', '${answer.last_name}', ${role_id}, ${manager_id})
@@ -421,6 +426,8 @@ updateEmployeeRole = () => {
             }
         ]).then(answer => {
             let role = [];
+
+            // Query to Database to retrieve all roles from the role table.  This will be used by the user to select new role.
             connection.query("SELECT id, title FROM role", function (err, res) {
                 if (err) throw err;
                 roles = res;
@@ -449,6 +456,8 @@ updateEmployeeRole = () => {
                     for (i = 0; i < role.length; i++) {
                         if (answer.newRole === role[i].title) {
                         newChoice = role[i].id
+
+                        // Update employee with new role.
                         selectSql = `
                             UPDATE employee SET role_id = ${newChoice} 
                             WHERE id = ${employeeSelected}
@@ -496,6 +505,8 @@ updateEmployeeManager = () => {
                 }
             }
         ]).then(answer => {
+
+            // Query employee table to retrieve the managers to build the manager array.
             selectSql = `
             SELECT id, first_name, last_name, CONCAT_WS(' ', first_name, last_name) AS managers 
             FROM employee
@@ -550,6 +561,7 @@ updateEmployeeManager = () => {
 
 
 deleteDepartment = () => {
+    // Query department table to build department array
     connection.query("SELECT id, name FROM department", (err, res) => {
         if (err) throw err;
         departments = res;
@@ -576,6 +588,8 @@ deleteDepartment = () => {
             for (i = 0; i < departmentOptions.length; i++) {
                 if (answer.deleteDepartment === departmentOptions[i].name) {
                     newChoice = departmentOptions[i].id
+
+                    // Remove department from department table
                     connection.query(`DELETE FROM department Where id = ${newChoice}`), (err, res) => {
                         if (err) throw err;
                     };
@@ -588,6 +602,7 @@ deleteDepartment = () => {
 };
 
 deleteRole = () => {
+    // Query role table to build role array
     connection.query("SELECT id, title FROM role", (err, res) => {
         if (err) throw err;
         roles = res;
@@ -614,6 +629,8 @@ deleteRole = () => {
             for (i = 0; i < role.length; i++) {
                 if (answer.deleteRole === role[i].title) {
                     newChoice = role[i].id
+
+                    // Remove role from role table
                     connection.query(`DELETE FROM role Where id = ${newChoice}`), (err, res) => {
                         if (err) throw err;
                     };
@@ -627,13 +644,13 @@ deleteRole = () => {
 };
 
 deleteEmployee = () => {
+    // Query employee table to build employee array
     selectSql = `
     SELECT id, CONCAT_WS(' ', first_name, last_name) AS Employee_Name FROM employee
     `
     connection.query(selectSql, (err, res) => {
         if (err) throw err;
         employees = res;
-        console.log(employees);
 
         let employeeOptions = [];
 
@@ -658,6 +675,8 @@ deleteEmployee = () => {
             for (i = 0; i < employeeOptions.length; i++) {
                 if (answer.deleteEmployee === employeeOptions[i].Employee_Name) {
                     newChoice = employeeOptions[i].id
+
+                    // Remove employee from employee table
                     connection.query(`DELETE FROM employee Where id = ${newChoice}`), (err, res) => {
                         if (err) throw err;
                     };
