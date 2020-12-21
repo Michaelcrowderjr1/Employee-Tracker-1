@@ -52,6 +52,13 @@ The main menu prompts the user to decide if he/she wants to Add, View, Update, D
 * UPDATE --> Update Employee roles, Update Employee Managers
 * DELETE --> Delete Department, Delete Role, Delete Employee
 
+### Employee Tracker node app.js Image
+![Employee Tracker node app.js Image](./Employee-Tracker-snapshot.PNG)
+
+
+### Employee Tracker Video
+[Employee Tracker Video Link](https://drive.google.com/file/d/18FWLgWW4BNjfHMFEApMskKFlIvYc-ZUX/view?usp=sharing)
+
 
 ## License
 
